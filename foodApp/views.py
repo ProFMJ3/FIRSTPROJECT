@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 #from .forms import CategorieForm, ProduitForm
 
 from .models import Menus, Clients
-from  .forms import MenusFrom, ClientsForm
+from  .forms import MenusForm, ClientsForm
 
 
 # git config --global core.autocrlf true
@@ -20,22 +20,22 @@ def base(request):
 
 def ajoutMenu(request):
     if request.method == 'POST':
-        formsMenu = MenusFrom(request.POST)
+        formsMenu = MenusForm(request.POST)
         if formsMenu.is_valid():
             nomMenu = formsMenu.cleaned_data['nomMenu']
-            composition = formsMenu.cleaned_data['compositon']
+            composition = formsMenu.cleaned_data['composition']
             categorie = formsMenu.cleaned_data['categorie']
             prixUnitaire = formsMenu.cleaned_data['prixUnitaire']
-            disponible = formsMenu.cleaned_data['diponible']
+            disponible = formsMenu.cleaned_data['disponible']
 
             menu = Menus(nomMenu=nomMenu, composition=composition, categorie=categorie, prixUnitaire=prixUnitaire, disponible=disponible)
-            categorie.save()
+            menu.save()
             return redirect('listeMenu')  # Redirection vers la page de liste des catégories
         else:
             print(formsMenu.errors)
 
     else:
-        formsMenu = Menus()
+        formsMenu = MenusForm()
 
     return render(request, 'ajoutMenu.html', {'formsMenu': formsMenu})
 

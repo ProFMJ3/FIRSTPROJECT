@@ -22,7 +22,7 @@
             margin: 20px auto 10px;
         }
 
-        input, textarea{
+        input, textarea, select{
             margin: auto;
             border-radius: 10px;
             width:80%;
@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="btn-liste">
-                    <a href=" {% url "listeMenu" %} " class="btn btn-primary">Liste Menu</a>
+                    <a href=" {% url "listeMenu" %} " class="btn btn-primary">Liste Food</a>
                 </div>
 
             </div>
@@ -136,7 +136,7 @@
 
             <h2>NOUVEAU MENU</h2>
             {% csrf_token %}
-            {{ formsMunu }}
+            {{ formsMenu }}
 
             <div class="center">
                 <button type="submit" class="btn1 btn-primary">Ajouter</button>
