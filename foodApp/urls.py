@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
 
+    #/foodApp/ URL menant vers à la page d'acceuil
     path('', views.base, name='base'),
     path('acceuil', views.acceuil, name='acceuil'),
 

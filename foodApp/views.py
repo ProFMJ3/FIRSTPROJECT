@@ -10,6 +10,7 @@ from  .forms import MenusFrom, ClientsForm
 # git config --global core.autocrlf true
 
 # Create your views here
+#la vue pour afficher l'acceuil
 def acceuil(request):
     return render(request, 'acceuil.html')
 def base(request):
