@@ -5,7 +5,8 @@ from  django.conf.urls.static import static
 from django.conf import  settings
 
 urlpatterns = [
-    path('', include('firstapp.urls')),
+    path('', include('foodApp.urls')),
+    path('firstapp/', include('firstapp.urls')),
     path('admin/', admin.site.urls),
 ]
 

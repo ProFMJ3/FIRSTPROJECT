@@ -1,32 +1,43 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 
-from .forms import CategorieForm, ProduitForm
+#from .forms import CategorieForm, ProduitForm
 
-from .models import Categorie, Produit
+from .models import Menus, Clients
+from  .forms import MenusFrom, ClientsForm
+
 
 # git config --global core.autocrlf true
 
 # Create your views here
 def acceuil(request):
     return render(request, 'acceuil.html')
+def base(request):
+    return render(request, 'base.html')
 
-def ajoutCategorie(request):
+
+
+def ajoutMenu(request):
     if request.method == 'POST':
-        forms = CategorieForm(request.POST)
-        if forms.is_valid():
-            titre = forms.cleaned_data['titre']
-            description = forms.cleaned_data['description']
-            categorie = Categorie(titre=titre, description=description)
+        formsMenu = MenusFrom(request.POST)
+        if formsMenu.is_valid():
+            nomMenu = formsMenu.cleaned_data['nomMenu']
+            composition = formsMenu.cleaned_data['compositon']
+            categorie = formsMenu.cleaned_data['categorie']
+            prixUnitaire = formsMenu.cleaned_data['prixUnitaire']
+            disponible = formsMenu.cleaned_data['diponible']
+
+            menu = Menus(nomMenu=nomMenu, composition=composition, categorie=categorie, prixUnitaire=prixUnitaire, disponible=disponible)
             categorie.save()
-            return redirect('listeCategorie')# Redirection vers la page de liste des catégories
+            return redirect('listeMenu')  # Redirection vers la page de liste des catégories
         else:
-            print(forms.errors)
+            print(formsMenu.errors)
 
     else:
-        forms = CategorieForm()
-    
-    return render(request, 'ajoutCategorie.html', {'forms': forms})
+        formsMenu = Menus()
+
+    return render(request, 'ajoutMenu.html', {'formsMenu': formsMenu})
+
 
 """
         forms = CustomUserCreationForm(request.POST)
@@ -39,7 +50,8 @@ def ajoutCategorie(request):
 
 """
 
-def ajoutProduit(request):
+
+def ajoutClient(request):
     if request.method == 'POST':
         forms = ProduitForm(request.POST, request.FILES)
         if forms.is_valid():
@@ -51,35 +63,36 @@ def ajoutProduit(request):
 
             produit = Produit(nom=nom, prixUnitaire=prixUnitaire, categorie=categorie, image=image, stock=stock)
             produit.save()
-            return redirect('listeProduit')# Redirection vers la page de liste des produits
-        
+            return redirect('listeProduit')  # Redirection vers la page de liste des produits
+
     else:
         forms = ProduitForm()
     return render(request, 'ajoutProduit.html', {'forms': forms})
-        
+
+
 def listeProduit(request):
     produits = Produit.objects.all()
 
-    context = {"produits":produits}
-    if  not produits.exists:
+    context = {"produits": produits}
+    if not produits.exists:
         message = "Aucun produit n'est enregistré"
-        
-        return render(request, "listeProduit.html", {"message":message})
-        
+
+        return render(request, "listeProduit.html", {"message": message})
 
     return render(request, "listeProduit.html", context)
 
-def listeCategorie(request):
-    categories = Categorie.objects.all()
 
-    context = {"categories":categories}
-    if  not categories.exists:
+def listeMenu(request):
+    menus = Menus.objects.all()
+
+    context = {"menus": menus}
+    if not menus.exists:
         message = "Aucun produit n'est enregistré"
-        
-        return render(request, 'listeCategorie.html', {"message":message})
-        
 
-    return render(request, 'listeCategorie.html', context)
+        return render(request, 'listeMenu.html', {"message": message})
+
+    return render(request, 'listeMenu.html', context)
+
 
 def supprimerProduit(request):
     if request.method == 'GET':
