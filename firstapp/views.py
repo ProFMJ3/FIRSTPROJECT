@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib import messages
 
 from .forms import CategorieForm, ProduitForm
 
@@ -83,5 +84,15 @@ def listeCategorie(request):
 
 def supprimerProduit(request):
     if request.method == 'GET':
-        produit = Produit.objects.get(id)
-        produit.delete()
+        id = request.GET.get('id')
+        if id:
+
+
+            produit = get_object_or_404(Produit, id=id)
+            produit.delete()
+            messages.success(request, f"{produit.nom} a été supprimer avec succès")
+            return redirect('listeProduit')
+        else:
+            messages.error(request, "Une erreur s'est produite lors de la suppression")
+    else:
+        return HttpResponse("Vous essayez d'utiliser une méthode non autorisée")
